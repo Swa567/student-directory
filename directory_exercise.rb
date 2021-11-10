@@ -24,19 +24,21 @@ def print_header
   puts "--------------"
 end
 
-def print(students)
-  index = 0
-  while index < (students.count)
-    # center each line individually it string slit over several line. Ruby's string class does not support centering a multi-line string.
-    # use split/map/join combination => "our_str".lines.map { |line| line.strip.center(80) }.join("\n")
-    puts "#{index+1}. #{students[index][:name]} (#{students[index][:cohort]} cohort)".center(80)
-    index += 1
+# def print(students)
+#   index = 0
+#   while index < (students.count)
+#     # center each line individually it string slit over several line. Ruby's string class does not support centering a multi-line string.
+#     # use split/map/join combination => "our_str".lines.map { |line| line.strip.center(80) }.join("\n")
+#     puts "#{index+1}. #{students[index][:name]} (#{students[index][:cohort]} cohort)".center(80)
+#     index += 1
+#   end
+# end
+
+def print_by_cohort(students)
+  students.each do |student_hash|
+    
   end
 end
-
-# def print_by_cohort(students)
-#   student
-# end
 
 def print_footer(names)
   puts "Overall, we have #{names.count} great students"
@@ -44,5 +46,6 @@ end
 
 students = input_students
 print_header
-print(students)
+# print(students)
+print_by_cohort(students)
 print_footer(students)
