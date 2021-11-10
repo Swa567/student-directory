@@ -23,7 +23,7 @@ end
 
 def print(students)
   students.each_with_index do |student, index|
-    if student[:name][0] == "T"
+    if student[:name].split(" ").join.length < 12
       puts "#{index}. #{student[:name]} (#{student[:cohort]} cohort)"
     end
   end
