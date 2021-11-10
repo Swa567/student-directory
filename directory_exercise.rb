@@ -8,7 +8,8 @@ def input_students
     # while the name is not empty, reapeat this code
     while !name.empty? do
       # get student's cohort
-      cohort = gets.chomp.capitalize
+      cohort = gets.chomp
+      cohort = "november" if cohort.empty?
       # add the student hash to the array
       students_list << {name: name, cohort: cohort}
       #get another names from the user
