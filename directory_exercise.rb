@@ -9,7 +9,7 @@ def input_students
     while !name.empty? do
       # get student's cohort
       cohort = gets.chomp
-      cohort = "november" if cohort.empty?
+      cohort.empty? ? cohort = :November : cohort = cohort.capitalize.to_sym
       # add the student hash to the array
       students_list << {name: name, cohort: cohort}
       #get another names from the user
@@ -33,6 +33,10 @@ def print(students)
     index += 1
   end
 end
+
+# def print_by_cohort(students)
+#   student
+# end
 
 def print_footer(names)
   puts "Overall, we have #{names.count} great students"
