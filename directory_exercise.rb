@@ -1,5 +1,5 @@
 def input_students
-    puts "Please ente the neams of the students"
+    puts "Please enter the name of the students and then his/her cohort"
     puts "To finish, just hit return twice"
     # create an empty array
     students_list = []
@@ -7,11 +7,12 @@ def input_students
     name = gets.chomp.capitalize
     # while the name is not empty, reapeat this code
     while !name.empty? do
-        # add the student hash to the array
-        students_list << {name: name, cohort: :november,}
-        #get another names from the user
-
-        name = gets.chomp
+      # get student's cohort
+      cohort = gets.chomp.capitalize
+      # add the student hash to the array
+      students_list << {name: name, cohort: cohort}
+      #get another names from the user
+      name = gets.chomp.capitalize
     end
     # return the array of students
     students_list
