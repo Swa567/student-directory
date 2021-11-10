@@ -1,11 +1,10 @@
-# STUDENT DIRECTORY AS IT IS AT STEP 7
 def input_students
     puts "Please ente the neams of the students"
     puts "To finish, just hit return twice"
     # create an empty array
     students_list = []
     # get the first name
-    name = gets.chomp
+    name = gets.chomp.capitalize
     # while the name is not empty, reapeat this code
     while !name.empty? do
         # add the student hash to the array
@@ -23,8 +22,10 @@ def print_header
 end
 
 def print(students)
-  students.each do |student|
-    puts "#{student[:name]} (#{student[:cohort]} cohort)"
+  index = 0
+  while index < (students.count)
+    puts "#{index+1}. #{students[index][:name]} (#{students[index][:cohort]} cohort)"
+    index += 1
   end
 end
 
@@ -32,9 +33,6 @@ def print_footer(names)
   puts "Overall, we have #{names.count} great students"
 end
 
-# nothing is happening until we call the methods
-# passing the students variable to the methods as an argument called 'names'
-# This is because the methods don't have access to local variables defined outside them.
 students = input_students
 print_header
 print(students)
