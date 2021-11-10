@@ -4,7 +4,7 @@ def input_students
     # create an empty array
     students_list = []
     # get the first name
-    name = gets.chomp
+    name = gets.chomp.capitalize
     # while the name is not empty, reapeat this code
     while !name.empty? do
         # add the student hash to the array
@@ -23,7 +23,9 @@ end
 
 def print(students)
   students.each_with_index do |student, index|
-    puts "#{index}. #{student[:name]} (#{student[:cohort]} cohort)"
+    if student[:name][0] == "T"
+      puts "#{index}. #{student[:name]} (#{student[:cohort]} cohort)"
+    end
   end
 end
 
