@@ -27,7 +27,8 @@ end
 def print_menu
   puts "1. Input the students"
   puts "2. Show the students"
-  puts "3. save the list to studetns.csv"
+  puts "3. save the list to students.csv"
+  puts "4. load the list from students.csv"
   puts "9. Exit"
 end
 
@@ -45,6 +46,8 @@ def process(selection)
       show_students
     when "3"
       save_students
+    when "4"
+      load_students
     when "9"
       Exit # will cause the program to terminate
     else
@@ -63,6 +66,15 @@ def save_students
   end
   file.close
 end
+
+def load_students
+  file = File.open("students.csv", "r")
+  file.readlines.each do |line|
+    name, cohort = line.chomp.split(",") # parallel assignement => 1st element of the array to 1st var
+    @students << {name: name, cohort: cohort.to_sym}
+  end
+  file.close
+end  
 
 def print_header
   puts "The students of Villains Academy"
