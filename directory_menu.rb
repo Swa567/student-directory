@@ -1,9 +1,39 @@
+ @students = [] # empty array accessible to ALL methods
+ 
+def input_students
+    puts "Please enter the name of the students and then his/her cohort"
+    puts "To finish, just hit return twice"
+    name = gets.chomp.capitalize
+    # while the name is not empty, reapeat this code
+    while !name.empty? do
+      # get student's cohort
+      cohort = gets.chomp.capitalize
+      cohort.empty? ? cohort = :November : cohort = cohort.capitalize.to_sym
+      # add the student hash to the array
+      @students << {name: name, cohort: cohort}
+      #get another names from the user
+      name = gets.chomp.capitalize
+    end
+    # return the array of students => @students accessible to ALL methods
+end
+
 def interactive_menu
-  @students = [] # instance variable accessible to ALL methods
   loop do
     print_menu
     process(gets.chomp)
   end 
+end
+
+def print_menu
+  puts "1. Input the students"
+  puts "2. Show the students"
+  puts "9. Exit"
+end
+
+def show_students
+  print_header
+  print_student_list
+  print_footer
 end
 
 def process(selection)
@@ -19,48 +49,15 @@ def process(selection)
   end # unless option 9, loop starts again
 end
 
-def print_menu
-  # 1. print the menu and ask the user what to do
-  puts "1. Input the students"
-  puts "2. Show the students"
-  puts "9. Exit"
-end
-
-def show_students
-  print_header
-  print
-  print_footer
-end
-
-def input_students
-    puts "Please enter the name of the students and then his/her cohort"
-    puts "To finish, just hit return twice"
-    name = gets.gsub("\n", "").capitalize
-    # while the name is not empty, reapeat this code
-    while !name.empty? do
-      # get student's cohort
-      # alternative to chomp(), use gsub look for Regex "\n" and replace it with ""
-      cohort = gets.gsub("\n", "").capitalize
-      cohort.empty? ? cohort = :November : cohort = cohort.capitalize.to_sym
-      # add the student hash to the array
-      @students << {name: name, cohort: cohort}
-      #get another names from the user
-      name = gets.chomp.capitalize
-    end
-    # return the array of students => @students accessible to ALL methods
-end
-
 def print_header
   puts "The students of Villains Academy"
   puts "--------------"
 end
 
-def print
+def print_student_list
   index = 0
   while index < (@students.count)
-    # center each line individually it string slit over several line. Ruby's string class does not support centering a multi-line string.
-    # use split/map/join combination => "our_str".lines.map { |line| line.strip.center(80) }.join("\n")
-    puts "#{index+1}. #{@students[index][:name]} (#{@students[index][:cohort]} cohort)".center(80)
+    puts "#{index+1}. #{@students[index][:name]} (#{@students[index][:cohort]} cohort)"
     index += 1
   end
 end
