@@ -4,11 +4,13 @@ def input_students
     # create an empty array
     students_list = []
     # get the first name
-    name = gets.chomp.capitalize
+    # alternative to chomp(), use gsub look for Regex "\n" and replace it with ""
+    name = gets.gsub("\n", "").capitalize
     # while the name is not empty, reapeat this code
     while !name.empty? do
       # get student's cohort
-      cohort = gets.chomp
+      # alternative to chomp(), use gsub look for Regex "\n" and replace it with ""
+      cohort = gets.gsub("\n", "").capitalize
       cohort.empty? ? cohort = :November : cohort = cohort.capitalize.to_sym
       # add the student hash to the array
       students_list << {name: name, cohort: cohort}
@@ -24,28 +26,28 @@ def print_header
   puts "--------------"
 end
 
-# def print(students)
-#   index = 0
-#   while index < (students.count)
-#     # center each line individually it string slit over several line. Ruby's string class does not support centering a multi-line string.
-#     # use split/map/join combination => "our_str".lines.map { |line| line.strip.center(80) }.join("\n")
-#     puts "#{index+1}. #{students[index][:name]} (#{students[index][:cohort]} cohort)".center(80)
-#     index += 1
-#   end
-# end
-
-def print_by_cohort(students)
-  students.each do |student_hash|
-    
+def print(students)
+  index = 0
+  while index < (students.count)
+    # center each line individually it string slit over several line. Ruby's string class does not support centering a multi-line string.
+    # use split/map/join combination => "our_str".lines.map { |line| line.strip.center(80) }.join("\n")
+    puts "#{index+1}. #{students[index][:name]} (#{students[index][:cohort]} cohort)".center(80)
+    index += 1
   end
 end
 
+# def print_by_cohort(students)
+#   students.each do |student_hash|
+    
+#   end
+# end
+
 def print_footer(names)
-  puts "Overall, we have #{names.count} great students"
+  puts "Overall, we have #{names.count} great #{names.count > 1 ? "students" : "student"}"
 end
 
 students = input_students
 print_header
-# print(students)
-print_by_cohort(students)
+print(students)
+# print_by_cohort(students)
 print_footer(students)
