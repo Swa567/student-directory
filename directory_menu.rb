@@ -16,13 +16,13 @@ def input_students
 end
 
 def load_students(filename = "students.csv") # default value for filename if it;s not given
-  file = File.open("students.csv", "r")
-  file.readlines.each do |line|
-    name, cohort = line.chomp.split(",") # parallel assignement => 1st element of the array to 1st var
-    cohort = cohort.capitalize.to_sym
-    add_students(name, cohort)
+  file = File.open("students.csv", "r") do | file|
+    file.readlines.each do |line|
+      name, cohort = line.chomp.split(",") # parallel assignement => 1st element of the array to 1st var
+      cohort = cohort.capitalize.to_sym
+      add_students(name, cohort)
+    end
   end
-  file.close
 end
 
 def add_students(name, cohort)
@@ -73,30 +73,36 @@ def process(selection)
   end # unless option 9, loop starts again
 end
 
-def save_students
+def save_students(filename = "students.csv") # default value for filename if it;s not given
   # open the file for writting
-  file = File.open("students.csv", "w")
+  file = File.open(filename , "w") do |file|
   # iterate over the array of students
-  @students.each do |student|
-    student_data = [student[:name], student[:cohort]] # convert Hash to Array
-    csv_line = student_data.join(",") # convert to comma-separated String 
-    file.puts csv_line
+    @students.each do |student|
+      student_data = [student[:name], student[:cohort]] # convert Hash to Array
+      csv_line = student_data.join(",") # convert to comma-separated String 
+      file.puts csv_line
+    end
   end
-  file.close
+  puts
+  puts  "*** Saved successfully to #{filename} ***"
+  puts
 end 
 
 def load_options
   filename = ARGV.first # first argument from the command line
   # load default file if no file name is given
   if filename.nil?
+    puts
     puts "Loaded default file: students.csv"
     load_students
   # load a specific file if the filename exists
   elsif File.exists?(filename)
     load_students(filename)
+    puts
     puts "Loaded #{@students.count} from #{filename}".center(@width)
   # if the filename doesn't exist
   else
+    puts
     puts "Sorry, #{filename} doesn't exist."
     exit
   end
