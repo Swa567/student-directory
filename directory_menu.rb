@@ -1,11 +1,14 @@
- @students = [] # empty array accessible to ALL methods
- @width = 60
+require 'csv' # require library
+
+@students = [] # empty array accessible to ALL methods
+@width = 60
+@loaded_file= ""
+@default_filename = "students.csv"
 
 def input_students
     puts "Please enter the name of the students and then his/her cohort"
     puts "To finish, just hit return twice"
     name = STDIN.gets.chomp.capitalize
-    # while the name is not empty, reapeat this code
     while !name.empty do
       cohort = STDIN.gets.chomp.capitalize
       cohort.empty? ? cohort = :November : cohort = cohort.capitalize.to_sym
@@ -15,21 +18,11 @@ def input_students
     puts "thank your for adding #{@students.count} students to Villain Academy"
 end
 
-def load_students(filename = "students.csv") # default value for filename if it;s not given
-  file = File.open("students.csv", "r") do | file|
-    file.readlines.each do |line|
-      name, cohort = line.chomp.split(",") # parallel assignement => 1st element of the array to 1st var
-      cohort = cohort.capitalize.to_sym
-      add_students(name, cohort)
-    end
-  end
-end
-
 def add_students(name, cohort)
     @students << {name: name, cohort: cohort}
-end
+endss
 
-def interactive_menu
+def interactive_menusss
   loop do
     puts "Please select an options"
     puts
@@ -67,22 +60,19 @@ def process(selection)
     when "5"
       print_by_cohort
     when "9"
-      Exit # will cause the program to terminate
+      Exit
     else
       puts "I don't know what you meant, try again"
   end # unless option 9, loop starts again
 end
 
-def save_students(filename = "students.csv") # default value for filename if it;s not given
-  # open the file for writting
-  file = File.open(filename , "w") do |file|
-  # iterate over the array of students
+def save_students(filename = @default_filename) # default value for filename if it;s not given
+  # using CSV Class
+  CSV.open(filename, "wb") do |csv|
     @students.each do |student|
-      student_data = [student[:name], student[:cohort]] # convert Hash to Array
-      csv_line = student_data.join(",") # convert to comma-separated String 
-      file.puts csv_line
+      csv << [student[:name]], [student[:cohort]], [student[:main_subject]]
     end
-  end
+  @loaded_file = filename
   puts
   puts  "*** Saved successfully to #{filename} ***"
   puts
@@ -99,14 +89,21 @@ def load_options
   elsif File.exists?(filename)
     load_students(filename)
     puts
-    puts "Loaded #{@students.count} from #{filename}".center(@width)
+    puts "Loaded #{@students.count} from #{@filename}".center(@width)
   # if the filename doesn't exist
   else
     puts
     puts "Sorry, #{filename} doesn't exist."
     exit
   end
-end  
+end 
+
+def load_students(filename = @default_filename) # default value for filename if it;s not given
+  if CSV.foreach(filename) do |row|  # the primary interface for reading CSV files: Each row of file will be passed to the provided block in turn.
+      name, cohort = row
+      add_student(name, cohort)
+    end
+end
 
 def print_by_cohort
   puts "which cohort would you like to print"
