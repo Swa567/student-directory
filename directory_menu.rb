@@ -1,4 +1,5 @@
  @students = [] # empty array accessible to ALL methods
+ @width = 60
 
 def input_students
     puts "Please enter the name of the students and then his/her cohort"
@@ -27,8 +28,9 @@ end
 def print_menu
   puts "1. Input the students"
   puts "2. Show the students"
-  puts "3. save the list to students.csv"
-  puts "4. load the list from students.csv"
+  puts "3. Save the list to students.csv"
+  puts "4. Load the list from students.csv"
+  puts "5. Show the students from a specific cohort"
   puts "9. Exit"
 end
 
@@ -48,6 +50,8 @@ def process(selection)
       save_students
     when "4"
       load_students
+    when "5"
+      print_by_cohort
     when "9"
       Exit # will cause the program to terminate
     else
@@ -88,9 +92,20 @@ def try_load_students(filename = "students.csv")
   end
 end  
 
+def print_by_cohort
+  puts "which cohort would you like to print"
+  selected_cohort = gets.chomp.capitalize.to_sym
+  puts "#{selected_cohort} cohort".upcase.center(@width)
+    @students.each do |student|
+      puts "#{student[:name]}".center(@width) if student[:cohort] == selected_cohort
+    end
+  puts "_" * @width
+end
+
+
 def print_header
   puts "The students of Villains Academy"
-  puts "--------------"
+  puts "_" * @width
 end
 
 def print_student_list
