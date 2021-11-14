@@ -6,20 +6,33 @@ def input_students
     puts "To finish, just hit return twice"
     name = STDIN.gets.chomp.capitalize
     # while the name is not empty, reapeat this code
-    while !name.empty? do
-      # get student's cohort
+    while !name.empty do
       cohort = STDIN.gets.chomp.capitalize
       cohort.empty? ? cohort = :November : cohort = cohort.capitalize.to_sym
-      # add the student hash to the array
-      @students << {name: name, cohort: cohort}
-      #get another names from the user
       name = STDIN.gets.chomp.capitalize
+      add_students(name, cohort)
     end
-    # return the array of students => @students accessible to ALL methods
+    puts "thank your for adding #{@students.count} students to Villain Academy"
+end
+
+def load_students(filename = "students.csv") # default value for filename if it;s not given
+  file = File.open("students.csv", "r")
+  file.readlines.each do |line|
+    name, cohort = line.chomp.split(",") # parallel assignement => 1st element of the array to 1st var
+    cohort = cohort.capitalize.to_sym
+    add_students(name, cohort)
+  end
+  file.close
+end
+
+def add_students(name, cohort)
+    @students << {name: name, cohort: cohort}
 end
 
 def interactive_menu
   loop do
+    puts "Please select an options"
+    puts
     print_menu
     process(STDIN.gets.chomp)
   end 
@@ -32,6 +45,7 @@ def print_menu
   puts "4. Load the list from students.csv"
   puts "5. Show the students from a specific cohort"
   puts "9. Exit"
+  puts
 end
 
 def show_students
@@ -69,26 +83,22 @@ def save_students
     file.puts csv_line
   end
   file.close
-end
-
-def load_students
-  file = File.open("students.csv", "r")
-  file.readlines.each do |line|
-    name, cohort = line.chomp.split(",") # parallel assignement => 1st element of the array to 1st var
-    @students << {name: name, cohort: cohort.to_sym}
-  end
-  file.close
 end 
 
-def try_load_students(filename = "students.csv")
+def load_options
   filename = ARGV.first # first argument from the command line
-  return if filename.nil?  # get out of the method if it isn't given
-  if File.exists?(filename)
+  # load default file if no file name is given
+  if filename.nil?
+    puts "Loaded default file: students.csv"
+    load_students
+  # load a specific file if the filename exists
+  elsif File.exists?(filename)
     load_students(filename)
-      puts "Loaded #{@students.count} from #{filename}"
-  else # if it doesn't exists
+    puts "Loaded #{@students.count} from #{filename}".center(@width)
+  # if the filename doesn't exist
+  else
     puts "Sorry, #{filename} doesn't exist."
-    exit # quit program
+    exit
   end
 end  
 
@@ -102,7 +112,6 @@ def print_by_cohort
   puts "_" * @width
 end
 
-
 def print_header
   puts "The students of Villains Academy"
   puts "_" * @width
@@ -114,11 +123,12 @@ def print_student_list
     puts "#{index+1}. #{@students[index][:name]} (#{@students[index][:cohort]} cohort)"
     index += 1
   end
+  puts "_" * @width
 end
 
 def print_footer
   puts "Overall, we have #{@students.count} great #{@students.count > 1 ? "students" : "student"}"
 end
 
-try_load_students
+load_options
 interactive_menu
